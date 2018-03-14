@@ -1,0 +1,26 @@
+{
+  "name": "steamradar",
+  "version": "0.0.1",
+  "description": "Discord Bot for pulling information from the Steam API, website and related sources. ",
+  "main": "./src/index.js",
+  "repository": "git@github.com:dsyomichev/steamradar.git",
+  "author": "carrots00 <dsyomichev@gmail.com>",
+  "license": "BSD",
+  "private": true,
+  "scripts": {
+    "start": "node ./src/index.js",
+    "dev": "nodemon ./src/index.js"
+  },
+  "dependencies": {
+    "discord-akairo": "1computer1/discord-akairo",
+    "discord.js": "hydrabolt/discord.js",
+    "readline-sync": "^1.4.9",
+    "request": "^2.85.0",
+    "request-promise": "^4.2.2",
+    "rethinkdbdash": "^2.3.31",
+    "winston": "^2.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.17.2"
+  }
+}

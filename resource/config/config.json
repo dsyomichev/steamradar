@@ -1,0 +1,15 @@
+{
+  "colors": {
+    "main": 16007886,
+    "alt": 11748084,
+    "error": 16711735
+  },
+  "bot": {
+    "name": "SteamRadar",
+    "icon": "https://cdn.discordapp.com/avatars/423559538231476224/b9f04db81d23e85759b4444f4b4e43de.png?size=80"
+  },
+  "settings": {
+    "version": "0.0.1",
+    "prefix": "~"
+  }
+}
