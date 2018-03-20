@@ -16,7 +16,7 @@ module.exports = class HelpCommand extends Command {
       ]
     });
     this.format = "help { (command name) }";
-    this.examples = ["help", "help prefix", "help list"];
+    this.examples = ["help", "help prefix", "help location"];
     this.details =
       "Find information about commands, and displays some useful links, such as support server invite and the full documentation.";
   }
@@ -37,7 +37,7 @@ module.exports = class HelpCommand extends Command {
       );
     }
     if (command) {
-        let old = command
+      let old = command;
       command = this.client.commandHandler.findCommand(command);
       let error = `${
         config.emoji.x
