@@ -9,7 +9,6 @@ module.exports = class PrefixCommand extends Command {
         {
           id: "prefix",
           type: "string",
-          default: "",
           match: "rest"
         },
         {
@@ -70,7 +69,7 @@ module.exports = class PrefixCommand extends Command {
         `${xEmoji}You need to have the **Manage Server** permission to change the server prefix.`
       );
     }
-    if (prefix.length > 10) {
+    if (prefix && prefix.length > 10) {
       return msg.util.send(
         `${xEmoji}Prefix should be under 10 characters long. You are ${prefix.length -
           10} characters over!`

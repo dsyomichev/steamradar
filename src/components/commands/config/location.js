@@ -9,8 +9,7 @@ module.exports = class LocationCommand extends Command {
       args: [
         {
           id: "location",
-          type: "string",
-          default: ""
+          type: "string"
         },
         {
           id: "guild",
@@ -35,7 +34,6 @@ module.exports = class LocationCommand extends Command {
     const defLoc = config.settings.location;
     const xEmoji = config.emoji.x;
     const cEmoji = config.emoji.c;
-    location = location == "clear" ? location : location.toUpperCase();
     const getLocation = type => {
       if (type == "user") {
         return this.client.provider.get(
@@ -60,6 +58,7 @@ module.exports = class LocationCommand extends Command {
         ? country.substring(0, country.indexOf(":"))
         : country;
     };
+
     if (location && user && guild) {
       return msg.util.send(
         `${xEmoji}The server and user locations need to be changed separately.`
@@ -75,6 +74,7 @@ module.exports = class LocationCommand extends Command {
         `${xEmoji}You need to have the **Manage Server** permission to change the server location.`
       );
     }
+    if (location && location.length == 2) location = location.toUpperCase();
     if (location && location != "clear" && !cc[location]) {
       return msg.util.send(`${xEmoji}Thats an invalid country code.`);
     }
