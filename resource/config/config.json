@@ -6,10 +6,16 @@
   },
   "bot": {
     "name": "SteamRadar",
-    "icon": "https://cdn.discordapp.com/avatars/423559538231476224/b9f04db81d23e85759b4444f4b4e43de.png?size=80"
+    "icon":
+      "https://cdn.discordapp.com/avatars/423559538231476224/b9f04db81d23e85759b4444f4b4e43de.png?size=256"
   },
   "settings": {
     "version": "0.0.1",
-    "prefix": "~"
+    "prefix": "sr!",
+    "location": "US"
+  },
+  "emoji": {
+    "x": "<:xx:425000210276679691>",
+    "c": "<:check:425000887744856104>"
   }
 }

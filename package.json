@@ -5,13 +5,14 @@
   "main": "./src/index.js",
   "repository": "git@github.com:dsyomichev/steamradar.git",
   "author": "carrots00 <dsyomichev@gmail.com>",
-  "license": "BSD",
+  "license": "gpl-3.0",
   "private": true,
   "scripts": {
     "start": "node ./src/index.js",
     "dev": "nodemon ./src/index.js"
   },
   "dependencies": {
+    "common-tags": "^1.7.2",
     "discord-akairo": "1computer1/discord-akairo",
     "discord.js": "hydrabolt/discord.js",
     "readline-sync": "^1.4.9",

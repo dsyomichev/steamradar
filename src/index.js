@@ -8,16 +8,16 @@ const token = require("../resource/config/keys").discord;
 const getPrefix = msg => {
   if (msg.guild) {
     return [
-      msg.client.provider.get(
-        "user",
-        msg.author.id,
-        "prefix",
-        msg.client.provider.get("guild", msg.guild.id, "prefix", prefix)
-      ),
-      msg.client.provider.get("guild", msg.guild.id, "prefix", prefix)
+      msg.client.provider.get("user", msg.author.id, "prefix", prefix),
+      msg.client.provider.get("guild", msg.guild.id, "prefix", prefix),
+      prefix
     ];
   }
-  return ["", msg.client.provider.get("user", msg.author.id, "prefix", prefix)];
+  return [
+    "",
+    msg.client.provider.get("user", msg.author.id, "prefix", prefix),
+    prefix
+  ];
 };
 
 const client = new Client(

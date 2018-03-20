@@ -15,7 +15,6 @@ class Logger extends winston.Logger {
       throw new Error(
         "Invalid log directory, no input or does not exist. Needs to be a valid path."
       );
-    console.log(dir);
     let transports = [
       new winston.transports.File({
         name: "error",
