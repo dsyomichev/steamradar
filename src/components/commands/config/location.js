@@ -25,7 +25,7 @@ module.exports = class LocationCommand extends Command {
       ]
     });
     this.format =
-      "location prefix {(CC) OR clear } {--user / -u OR --sever / -s}";
+      "location prefix { (CC) OR clear } { --user / -u OR --sever / -s }";
     this.examples = ["location", "location GB --server", "location -u IN"];
     this.details =
       "Change the server or users location using a 2 letter country code such as US, GB, or RU.";
