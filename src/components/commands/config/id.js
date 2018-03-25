@@ -13,7 +13,7 @@ module.exports = class PingCommand extends Command {
       ]
     });
     this.format = "id {( SteamID / CustomID ) OR clear}";
-    this.examples = ["id","id clear", "id carrotstress"];
+    this.examples = ["id", "id clear", "id carrotstress"];
     this.details =
       "Set the default SteamID or CustomID to use with commands. Once this is set, the user does not need to be inputed for commands that require a user.";
   }

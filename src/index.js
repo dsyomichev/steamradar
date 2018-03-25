@@ -1,9 +1,11 @@
 const path = require("path");
-require("./components/startup")(path.join(__dirname, "../resource/config"));
-const log = require("./components/log");
-const Client = require("./components/client");
+require("./components/base/startup")(
+  path.join(__dirname, "../resource/config")
+);
+const log = require("./components/base/log");
+const Client = require("./components/Client");
 const prefix = require("../resource/config/config").settings.prefix;
-const token = require("../resource/config/keys").discord;
+const keys = require("../resource/config/keys");
 
 const getPrefix = msg => {
   if (msg.guild) {
@@ -37,5 +39,4 @@ const client = new Client(
   }
 );
 
-client.setProvider();
-client.login(token);
+client.start({ discord: keys.discord, steam: keys.steam });

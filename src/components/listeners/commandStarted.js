@@ -1,5 +1,5 @@
 const { Listener } = require("discord-akairo");
-const logger = require("../log");
+const logger = require("../base/log");
 module.exports = class CommandStartedListener extends Listener {
   constructor() {
     super("commandStarted", {

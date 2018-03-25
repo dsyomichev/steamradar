@@ -42,4 +42,4 @@ class Logger extends winston.Logger {
   }
 }
 
-module.exports = new Logger(logs, path.join(__dirname, "../../logs"));
+module.exports = new Logger(logs, path.join(__dirname, "../../../logs"));

@@ -1,5 +1,5 @@
 const fs = require("fs");
-const path = require("path")
+const path = require("path");
 const rls = require("readline-sync");
 const log = require("./log");
 
@@ -27,7 +27,5 @@ module.exports = dir => {
         lists: lists
       })
     );
-
-    log.silly("Hello");
   }
 };

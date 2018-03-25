@@ -12,15 +12,19 @@
     "dev": "nodemon ./src/index.js"
   },
   "dependencies": {
+    "bufferpack": "^0.0.6",
+    "cheerio": "^1.0.0-rc.2",
     "common-tags": "^1.7.2",
     "discord-akairo": "1computer1/discord-akairo",
     "discord.js": "hydrabolt/discord.js",
     "moment": "^2.21.0",
     "moment-duration-format": "^2.2.2",
+    "querystring": "^0.2.0",
     "readline-sync": "^1.4.9",
     "request": "^2.85.0",
     "request-promise": "^4.2.2",
     "rethinkdbdash": "^2.3.31",
+    "tough-cookie": "^2.3.4",
     "winston": "^2.4.1"
   },
   "devDependencies": {
