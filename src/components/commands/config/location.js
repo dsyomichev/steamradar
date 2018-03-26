@@ -1,11 +1,13 @@
-const { Command } = require("discord-akairo");
-const config = require("../../../../resource/config/config");
+const Command = require("../../../structure/Command.js");
 const cc = require("../../../../resource/data/countries.json");
 module.exports = class LocationCommand extends Command {
   constructor() {
     super("location", {
       aliases: ["location"],
       description: "Show or change the location of the user or server.",
+      format:"location prefix { (CC) OR clear } { --user / -u OR --sever / -s }",
+      examples:["location", "location GB --server", "location -u IN"],
+      details:"Change the server or users location using a 2 letter country code such as US, GB, or RU.",
       args: [
         {
           id: "location",
@@ -23,17 +25,12 @@ module.exports = class LocationCommand extends Command {
         }
       ]
     });
-    this.format =
-      "location prefix { (CC) OR clear } { --user / -u OR --sever / -s }";
-    this.examples = ["location", "location GB --server", "location -u IN"];
-    this.details =
-      "Change the server or users location using a 2 letter country code such as US, GB, or RU.";
   }
 
   async exec(msg, { location, guild, user }) {
-    const defLoc = config.settings.location;
-    const xEmoji = config.emoji.x;
-    const cEmoji = config.emoji.c;
+    const defLoc = this.client.location;
+    const xEmoji = this.emoji.x;
+    const cEmoji = this.emoji.c;
     const getLocation = type => {
       if (type == "user") {
         return this.client.provider.get(

@@ -1,24 +1,29 @@
 const path = require("path");
-require("./components/base/startup")(
-  path.join(__dirname, "../resource/config")
-);
-const log = require("./components/base/log");
-const Client = require("./components/Client");
-const prefix = require("../resource/config/config").settings.prefix;
+const Client = require("./structure/Client");
 const keys = require("../resource/config/keys");
 
 const getPrefix = msg => {
   if (msg.guild) {
     return [
-      msg.client.provider.get("user", msg.author.id, "prefix", prefix),
-      msg.client.provider.get("guild", msg.guild.id, "prefix", prefix),
-      prefix
+      msg.client.provider.get(
+        "user",
+        msg.author.id,
+        "prefix",
+        msg.client.prefix
+      ),
+      msg.client.provider.get(
+        "guild",
+        msg.guild.id,
+        "prefix",
+        msg.client.prefix
+      ),
+      msg.client.prefix
     ];
   }
   return [
     "",
-    msg.client.provider.get("user", msg.author.id, "prefix", prefix),
-    prefix
+    msg.client.provider.get("user", msg.author.id, "prefix", msg.client.prefix),
+    msg.client.prefix
   ];
 };
 

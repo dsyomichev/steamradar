@@ -1,5 +1,4 @@
 const { Listener } = require("discord-akairo");
-const logger = require("../base/log");
 module.exports = class CommandBlockedListener extends Listener {
   constructor() {
     super("commandBlocked", {
@@ -9,6 +8,6 @@ module.exports = class CommandBlockedListener extends Listener {
   }
 
   exec(msg, cmd, reason) {
-    logger.debug(`Command Blocked | ${cmd} [ ${reason} ]`);
+    this.client.logger.debug(`Command Blocked | ${cmd} [ ${reason} ]`);
   }
 };

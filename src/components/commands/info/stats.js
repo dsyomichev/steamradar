@@ -1,5 +1,4 @@
-const { Command } = require("discord-akairo");
-const config = require("../../../../resource/config/config");
+const Command = require("../../../structure/Command.js");
 const moment = require("moment");
 require("moment-duration-format");
 
@@ -7,12 +6,12 @@ module.exports = class InfoCommand extends Command {
   constructor() {
     super("stats", {
       aliases: ["stats"],
-      description: "Show some random stats about the bot."
+      description: "Show some random stats about the bot.",
+      format: "stats",
+      examples: ["stats"],
+      details:
+        "Show some inforamtion about the bot, such as servers uptime, and memory usage."
     });
-    this.format = "stats";
-    this.examples = ["stats"];
-    this.details =
-      "Show some inforamtion about the bot, such as servers uptime, and memory usage.";
   }
 
   async exec(msg) {
@@ -59,7 +58,7 @@ module.exports = class InfoCommand extends Command {
         thumbnail: {
           url: this.client.user.displayAvatarURL()
         },
-        color: config.colors.main
+        color: this.colors.main
       }
     });
   }

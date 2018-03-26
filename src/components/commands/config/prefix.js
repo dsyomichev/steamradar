@@ -1,10 +1,17 @@
-const { Command } = require("discord-akairo");
-const config = require("../../../../resource/config/config");
+const Command = require("../../../structure/Command.js");
 module.exports = class PrefixCommand extends Command {
   constructor() {
     super("prefix", {
       aliases: ["prefix"],
       description: "Show or change the user and server prefix.",
+      format:"prefix {(prefix) OR clear } {--user / -u OR --sever / -s}",
+      examples:[
+        "prefix",
+        "prefix -u ;",
+        "prefix --server steam",
+        "prefix --user"
+      ],
+      details:"View or change the command prefix for the server. Requires the `Manage Server` permission to change the server prefix.",
       args: [
         {
           id: "prefix",
@@ -23,20 +30,11 @@ module.exports = class PrefixCommand extends Command {
         }
       ]
     });
-    this.format = "prefix {(prefix) OR clear } {--user / -u OR --sever / -s}";
-    this.examples = [
-      "prefix",
-      "prefix -u ;",
-      "prefix --server steam",
-      "prefix --user"
-    ];
-    this.details =
-      "View or change the command prefix for the server. Requires the `Manage Server` permission to change the server prefix.";
   }
   async exec(msg, { prefix, guild, user }) {
-    const defaultPrefix = config.settings.prefix;
-    const xEmoji = config.emoji.x;
-    const cEmoji = config.emoji.c;
+    const defaultPrefix = this.client.prefix;
+    const xEmoji = this.emoji.x;
+    const cEmoji = this.emoji.c;
     const getPrefix = type => {
       if (type == "user") {
         return this.client.provider.get(

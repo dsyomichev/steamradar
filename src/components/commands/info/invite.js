@@ -1,15 +1,14 @@
-const { Command } = require("discord-akairo");
-const config = require("../../../../resource/config/config");
+const Command = require("../../../structure/Command.js");
 
 module.exports = class InfoCommand extends Command {
   constructor() {
     super("invite", {
       aliases: ["invite"],
-      description: "Get an invite link for the bot."
+      description: "Get an invite link for the bot.",
+      format: "invite",
+      examples: ["invite"],
+      details: "Shows an invite link for the bot."
     });
-    this.format = "invite";
-    this.examples = ["invite"];
-    this.details = "Shows an invite link for the bot.";
   }
 
   exec(msg) {

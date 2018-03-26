@@ -1,5 +1,4 @@
 const { Listener } = require("discord-akairo");
-const logger = require("../base/log");
 module.exports = class CommandStartedListener extends Listener {
   constructor() {
     super("commandStarted", {
@@ -9,6 +8,6 @@ module.exports = class CommandStartedListener extends Listener {
   }
 
   exec(msg, cmd, args) {
-    logger.debug(`Command Run | ${cmd} [ ${JSON.stringify(args)} ]`);
+    this.client.logger.debug(`Command Run | ${cmd} [ ${JSON.stringify(args)} ]`);
   }
 };

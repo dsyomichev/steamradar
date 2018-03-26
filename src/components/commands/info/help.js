@@ -1,11 +1,13 @@
-const { Command } = require("discord-akairo");
-const config = require("../../../../resource/config/config");
+const Command = require("../../../structure/Command.js");
 
 module.exports = class HelpCommand extends Command {
   constructor() {
     super("help", {
       aliases: ["help"],
       description: "Show a list of useful commands and links.",
+      format:"help { (command name) }",
+      examples:["help", "help prefix", "help location"],
+      details:"Find information about commands, and displays some useful links, such as support server invite and the full documentation.",
       protected: "true",
       args: [
         {
@@ -15,10 +17,6 @@ module.exports = class HelpCommand extends Command {
         }
       ]
     });
-    this.format = "help { (command name) }";
-    this.examples = ["help", "help prefix", "help location"];
-    this.details =
-      "Find information about commands, and displays some useful links, such as support server invite and the full documentation.";
   }
 
   async exec(msg, { command }) {
@@ -32,7 +30,7 @@ module.exports = class HelpCommand extends Command {
           "guild",
           msg.guild.id,
           "prefix",
-          config.settings.prefix
+          this.client.prefix
         )
       );
     }
@@ -40,7 +38,7 @@ module.exports = class HelpCommand extends Command {
       let old = command;
       command = this.client.commandHandler.findCommand(command);
       let error = `${
-        config.emoji.x
+        this.emoji.x
       }The command \`${old}\` wasn't found.\n\n**Commands**\nhttps://steamradar.io/commands\n\n**Help Command**\n\`${prefix}help {(Command Name)}\` - Shows the built in documentation for the command.`;
       if (!command) return msg.util.send(error);
       if (command.ownerOnly == true && msg.author.id != this.client.ownerID)

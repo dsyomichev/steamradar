@@ -1,5 +1,4 @@
 const { Listener } = require("discord-akairo");
-const logger = require("../base/log");
 module.exports = class ReadyListener extends Listener {
   constructor() {
     super("ready", {
@@ -9,6 +8,6 @@ module.exports = class ReadyListener extends Listener {
   }
 
   exec() {
-    logger.info(`Connected to Discord`);
+    this.client.logger.info(`Connected to Discord`);
   }
 };

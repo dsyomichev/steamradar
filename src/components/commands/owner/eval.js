@@ -4,7 +4,7 @@ const util = require("util");
 const discord = require("discord.js");
 const tags = require("common-tags");
 const escapeRegex = require("escape-string-regexp");
-const { Command } = require("discord-akairo");
+const Command = require("../../../structure/Command.js");
 
 const nl = "!!NL!!";
 const nlPattern = new RegExp(nl, "g");
@@ -14,6 +14,13 @@ module.exports = class EvalCommand extends Command {
     super("eval", {
       aliases: ["eval"],
       description: "Evaluate JS.",
+      format: "eval [ (script) ]",
+      examples: [
+        "eval msg.guild.id",
+        'eval this.client.commandHandler.modules.get("eval")'
+      ],
+      details:
+        "Use this command to evaluate JavaScript. This command is `ownerOnly` and will not be responded to.",
       ownerOnly: true,
       args: [
         {
@@ -26,14 +33,6 @@ module.exports = class EvalCommand extends Command {
         }
       ]
     });
-    this.format = "eval [ (script) ]";
-    this.examples = [
-      "eval msg.guild.id",
-      'eval this.client.commandHandler.modules.get("eval")'
-    ];
-    this.details =
-      "Use this command to evaluate JavaScript. This command is `ownerOnly` and will not be responded to.";
-
     this.lastResult = null;
   }
 

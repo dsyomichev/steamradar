@@ -1,14 +1,14 @@
-const { Command } = require("discord-akairo");
+const Command = require("../../../structure/Command.js");
 module.exports = class PingCommand extends Command {
   constructor() {
     super("ping", {
       aliases: ["ping"],
+      format:"ping",
+      examples:["ping"],
+      details:"Show the round trip and heartbeat ping of the bot.",
       description: "Get the ping to the Discord API.",
       ownerOnly: true
     });
-    this.format = "ping";
-    this.examples = ["ping"];
-    this.details = "Show the round trip and heartbeat ping of the bot.";
   }
 
   async exec(msg) {

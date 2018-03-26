@@ -1,10 +1,13 @@
-const { Command } = require("discord-akairo");
-const config = require("../../../../resource/config/config");
+const Command = require("../../../structure/Command.js");
 module.exports = class PingCommand extends Command {
   constructor() {
     super("username", {
       aliases: ["id"],
       description: "Set your default SteamID to use with commands.",
+      format: "id {( SteamID / CustomID ) OR clear}",
+      examples: ["id", "id clear", "id carrotstress"],
+      details:
+        "Set the default SteamID or CustomID to use with commands. Once this is set, the user does not need to be inputed for commands that require a user.",
       args: [
         {
           id: "id",
@@ -12,15 +15,11 @@ module.exports = class PingCommand extends Command {
         }
       ]
     });
-    this.format = "id {( SteamID / CustomID ) OR clear}";
-    this.examples = ["id", "id clear", "id carrotstress"];
-    this.details =
-      "Set the default SteamID or CustomID to use with commands. Once this is set, the user does not need to be inputed for commands that require a user.";
   }
 
   async exec(msg, { id }) {
-    const xEmoji = config.emoji.x;
-    const cEmoji = config.emoji.c;
+    const xEmoji = this.emoji.x;
+    const cEmoji = this.emoji.c;
     if (!id) {
       let user = this.client.provider.get("user", msg.author.id, "steamid");
       if (!user) {
@@ -33,6 +32,8 @@ module.exports = class PingCommand extends Command {
       await this.client.provider.remove("user", msg.author.id, "steamid");
       return msg.util.send(`${cEmoji}Your default SteamID has been removed.`);
     } else if (id) {
+      id = await this.client.steam.resolveUser(id);
+      if (!id) return msg.util.send(`${xEmoji} User could not be found.`);
       await this.client.provider.set("user", msg.author.id, "steamid", id);
       return msg.util.send(
         `${cEmoji}Your default SteamID has been set to \`${id}\``
