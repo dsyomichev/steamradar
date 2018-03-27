@@ -5,9 +5,10 @@ module.exports = class HelpCommand extends Command {
     super("help", {
       aliases: ["help"],
       description: "Show a list of useful commands and links.",
-      format:"help { (command name) }",
-      examples:["help", "help prefix", "help location"],
-      details:"Find information about commands, and displays some useful links, such as support server invite and the full documentation.",
+      format: "help { (command name) }",
+      examples: ["help", "help prefix", "help location"],
+      details:
+        "Find information about commands, and displays some useful links, such as support server invite and the full documentation.",
       protected: "true",
       args: [
         {
@@ -57,15 +58,21 @@ module.exports = class HelpCommand extends Command {
         }
       }
       return msg.util.send(
-        `__**${name}**__\n${
-          command.details
-            ? command.details
-            : command.description ? command.description : ""
-        }\n\n${format}\n\n${examples}`
+        this.confirm(
+          name,
+          `${
+            command.details
+              ? command.details
+              : command.description ? command.description : ""
+          }\n\n${format}\n\n${examples}`
+        )
       );
     } else {
       return msg.util.send(
-        `**Commands:**\nhttps://steamradar.io/commands\nLearn about how to read the documentation here: https://steamradar.io/help/docs\n\n**Support**\nhttps://discord.gg/XrW5hqK\nFor help use \`#help\`\nFor reporting bugs use \`#bugs\`\nFor request features use \`#requests\`\n\n**Help Command**\n\`${prefix}help {(Command Name)}\` - Shows the built in documentation for the command.`
+        this.confirm(
+          "SteamRadar Help",
+          `**Commands:**\nhttps://steamradar.io/commands\nLearn about how to read the documentation here: https://steamradar.io/help/docs\n\n**Support**\nhttps://discord.gg/XrW5hqK\nFor help use \`#help\`\nFor reporting bugs use \`#bugs\`\nFor request features use \`#requests\`\n\n**Help Command**\n\`${prefix}help {(Command Name)}\` - Shows the built in documentation for the command.`
+        )
       );
     }
   }

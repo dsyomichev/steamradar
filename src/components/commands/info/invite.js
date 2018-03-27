@@ -13,7 +13,10 @@ module.exports = class InfoCommand extends Command {
 
   exec(msg) {
     msg.util.send(
-      "Add SteamRadar using this link:\nhttps://steamradar.io/invite\n\nJoin the support server using this link:\nhttps://discord.gg/XrW5hqK"
+      this.confirm(
+        "SteamRadar Invites",
+        "Add SteamRadar using this link:\nhttps://steamradar.io/invite\n\nJoin the support server using this link:\nhttps://discord.gg/XrW5hqK"
+      )
     );
   }
 };

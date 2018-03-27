@@ -12,7 +12,33 @@ module.exports = class Command extends require("discord-akairo").Command {
     this.emoji = config.emoji;
   }
 
-  error(message) {}
+  invalid(title = "", message = "") {
+    return {
+      embed: {
+        color: this.colors.error,
+        title: title,
+        description: message
+      }
+    };
+  }
 
-  confirm(message) {}
+  confirm(title = "", message = "") {
+    return {
+      embed: {
+        color: this.colors.main,
+        title: title,
+        description: message
+      }
+    };
+  }
+
+  alt(title = "", message = "") {
+    return {
+      embed: {
+        color: this.colors.alt,
+        title: title,
+        description: message
+      }
+    };
+  }
 };
