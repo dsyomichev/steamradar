@@ -1,103 +1,98 @@
-const { AkairoClient } = require("discord-akairo");
-const rp = require("request-promise");
-const tough = require("tough-cookie");
-const fs = require("fs");
 const path = require("path");
-const rls = require("readline-sync");
-const Provider = require("../../lib/RethinkProvider");
-const SteamUtil = require("./SteamUtil");
-const Logger = require("./Logger");
+
+const Provider = require(path.resolve("lib/RethinkProvider"));
+const SteamUtil = require(path.resolve("src/structure/SteamUtil"));
+const Logger = require(path.resolve("src/structure/Logger"));
+
+const { AkairoClient, InhibitorHandler, ListenerHandler } = require("discord-akairo");
+const CommandHandler = require(path.resolve("src/structure/CommandHandler"));
 
 module.exports = class Client extends AkairoClient {
-  async start() {
-    this.logger = new Logger(path.join(__dirname, "../../logs"));
-    let dir = path.join(__dirname, "../../resource/config/");
-    if (fs.existsSync(path.join(dir, "keys.json")) == false) {
-      discord = rls.question("     >> Discord Token: ", {
-        hideEchoBack: true
-      });
-      steam = rls.question("     >> Steam Key: ", {
-        hideEchoBack: true
-      });
-      let lists = {};
-      lists.dbl = rls.question("     >> DBL Token: ", {
-        hideEchoBack: true
-      });
-      lists.bpw = rls.question("     >> BPW Token: ", {
-        hideEchoBack: true
-      });
-      fs.writeFileSync(
-        path.join(dir, "keys.json"),
-        JSON.stringify({
-          discord: discord,
-          steam: steam,
-          lists: lists
-        })
-      );
+  constructor(options = {}, clientOptions) {
+    super(options, clientOptions);
+    let { logDirectory, configDirectory } = options;
+    this.log = new Logger(logDirectory);
+
+    this.configDirectory = configDirectory;
+    let { version, defaults } = require(path.join(this.configDirectory, "settings"));
+
+    this.version = version;
+    this.defaults = defaults;
+  }
+
+  build() {
+    if (this._built) {
+      throw new AkairoError("BUILD_ONCE");
     }
 
-    let keys = require(path.join(dir, "keys.json"));
-    let config = require("../../resource/config/config");
-    this.prefix = config.settings.prefix;
-    this.location = config.settings.location;
-    this.version = config.settings.version;
+    this._built = true;
 
-    await this.setSession();
+    if (this.akairoOptions.commandDirectory && !this.commandHandler) {
+      /**
+       * The command handler.
+       * @type {CommandHandler}
+       */
+      this.commandHandler = new CommandHandler(this);
+    }
+
+    if (this.akairoOptions.inhibitorDirectory && !this.inhibitorHandler) {
+      /**
+       * The inhibitor handler.
+       * @type {InhibitorHandler}
+       */
+      this.inhibitorHandler = new InhibitorHandler(this);
+    }
+
+    if (this.akairoOptions.listenerDirectory && !this.listenerHandler) {
+      /**
+       * The listener handler.
+       * @type {ListenerHandler}
+       */
+      this.listenerHandler = new ListenerHandler(this);
+    }
+
+    return this;
+  }
+
+  async start({ discord, steam }) {
+    this.startSession(steam);
     this.setProvider();
-    this.steam(keys.steam);
-    this.login(keys.discord);
+    this.login(discord);
   }
 
-  async setSession() {
-    let res;
-    try {
-      res = await rp({
-        uri: "http://steamcommunity.com",
-        method: "GET",
-        resolveWithFullResponse: true
-      });
-    } catch (error) {
-      this.logger.warn(
-        "Steam Community is down. Unable to receive session key."
-      );
-      this.session = null;
-      return;
+  async startSession(key) {
+    this.steam = new SteamUtil({ key });
+    if (this.readyTimestamp) {
+      try {
+        await this.steam.init();
+      } catch (err) {
+        return this.log.error(err);
+      }
+      return this.log.debug("Steam Utils Initialized");
     }
-
-    let cookiestring = res.headers["set-cookie"][0];
-    let sessionid = cookiestring.substring(10, cookiestring.indexOf(";"));
-    let cookie = tough.Cookie.parse(cookiestring);
-    let jar = rp.jar();
-    jar.setCookie(cookie, "http://steamcommunity.com");
-    this.session = { id: sessionid, jar: jar };
-    return this.logger.debug("Started Session with Steam Community");
-  }
-
-  steam(key) {
-    this.steam = new SteamUtil({
-      key: key,
-      sessionid: this.session.id,
-      jar: this.session.jar
+    return await new Promise(resolve => {
+      this.once("ready", () => {
+        this.log.debug("Initializing Steam Utils");
+        return resolve(this.steam.init());
+      });
     });
   }
 
   async setProvider(host = "localhost", port = 28015) {
     this.provider = new Provider(host, port);
     if (this.readyTimestamp) {
-      this.logger.debug(`Provider set to ${this.provider.constructor.name}`);
+      this.log.debug(`Provider set to ${this.provider.constructor.name}`);
       try {
         await this.provider.init();
       } catch (err) {
-        this.logger.error(err);
-        return;
+        return this.log.error(err);
       }
-      this.logger.debug("Provider Initialized");
-      return;
+      return this.log.debug("Provider Initialized");
     }
-    this.logger.debug(`Provider set to ${this.provider.constructor.name}`);
-    await new Promise(resolve => {
+    this.log.debug(`Provider set to ${this.provider.constructor.name}`);
+    return await new Promise(resolve => {
       this.once("ready", () => {
-        this.logger.debug(`Initialising Provider`);
+        this.log.debug(`Initializing Provider`);
         resolve(this.provider.init());
       });
     });

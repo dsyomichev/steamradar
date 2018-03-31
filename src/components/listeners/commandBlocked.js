@@ -8,6 +8,6 @@ module.exports = class CommandBlockedListener extends Listener {
   }
 
   exec(msg, cmd, reason) {
-    this.client.logger.debug(`Command Blocked | ${cmd} [ ${reason} ]`);
+    this.client.log.debug(`Command Blocked | ${cmd} [ ${reason} ]`);
   }
 };

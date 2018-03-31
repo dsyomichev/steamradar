@@ -8,6 +8,6 @@ module.exports = class ReadyListener extends Listener {
   }
 
   exec() {
-    this.client.logger.info(`Connected to Discord`);
+    this.client.log.info(`Connected to Discord`);
   }
 };

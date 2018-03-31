@@ -1,47 +1,33 @@
 const path = require("path");
-const Client = require("./structure/Client");
-const keys = require("../resource/config/keys");
+const Client = require(path.resolve("src/structure/Client"));
+const { discord, steam } = require(path.resolve("res/config/keys"));
 
 const getPrefix = msg => {
-  if (msg.guild) {
-    return [
-      msg.client.provider.get(
-        "user",
-        msg.author.id,
-        "prefix",
-        msg.client.prefix
-      ),
-      msg.client.provider.get(
-        "guild",
-        msg.guild.id,
-        "prefix",
-        msg.client.prefix
-      ),
-      msg.client.prefix
-    ];
+  let def = msg.client.defaults.prefix;
+  if (msg.channel.type == "text") {
+    return [msg.client.provider.get("user", msg.author.id, "prefix", def), msg.client.provider.get("guild", msg.guild.id, "prefix", def), def];
   }
-  return [
-    "",
-    msg.client.provider.get("user", msg.author.id, "prefix", msg.client.prefix),
-    msg.client.prefix
-  ];
+  return ["", msg.client.provider.get("user", msg.author.id, "prefix", def), def];
 };
 
 const client = new Client(
   {
     ownerID: "258328359040188418",
     handleEdits: true,
+    commandUtil: true,
     allowMention: true,
     commandUtilLifetime: 300000,
     automateCategories: true,
     prefix: getPrefix,
-    commandDirectory: path.join(__dirname, "./components/commands/"),
-    inhibitorDirectory: path.join(__dirname, "./components/inhibitors/"),
-    listenerDirectory: path.join(__dirname, "./components/listeners/")
+    commandDirectory: path.resolve("src/components/commands/"),
+    inhibitorDirectory: path.resolve("src/components/inhibitors/"),
+    listenerDirectory: path.resolve("src/components/listeners/"),
+    logDirectory: path.resolve("log"),
+    configDirectory: path.resolve("res/config")
   },
   {
     disableEveryone: true
   }
 );
 
-client.start({ discord: keys.discord, steam: keys.steam });
+client.start({ discord, steam });

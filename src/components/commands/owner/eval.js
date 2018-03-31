@@ -15,12 +15,8 @@ module.exports = class EvalCommand extends Command {
       aliases: ["eval"],
       description: "Evaluate JS.",
       format: "eval [ (script) ]",
-      examples: [
-        "eval msg.guild.id",
-        'eval this.client.commandHandler.modules.get("eval")'
-      ],
-      details:
-        "Use this command to evaluate JavaScript. This command is `ownerOnly` and will not be responded to.",
+      examples: ["eval msg.guild.id", 'eval this.client.commandHandler.modules.get("eval")'],
+      details: "Use this command to evaluate JavaScript. This command is `ownerOnly` and will not be responded to.",
       ownerOnly: true,
       args: [
         {
@@ -45,10 +41,7 @@ module.exports = class EvalCommand extends Command {
       if (val instanceof Error) {
         msg.util.send(`Callback error: \`${val}\``);
       } else {
-        const result = this.makeResultMessages(
-          val,
-          process.hrtime(this.hrStart)
-        );
+        const result = this.makeResultMessages(val, process.hrtime(this.hrStart));
         if (Array.isArray(result)) {
           for (const item of result) {
             if (this.client.options.selfbot) msg.say(item);
@@ -71,16 +64,10 @@ module.exports = class EvalCommand extends Command {
     }
 
     this.hrStart = process.hrtime();
-    let response = this.makeResultMessages(
-      this.lastResult,
-      hrDiff,
-      args.script,
-      msg.editable
-    );
+    let response = this.makeResultMessages(this.lastResult, hrDiff, args.script, msg.editable);
     if (msg.editable) {
       if (response instanceof Array) {
-        if (response.length > 0)
-          response = response.slice(1, response.length - 1);
+        if (response.length > 0) response = response.slice(1, response.length - 1);
         for (const re of response) msg.say(re);
         return null;
       } else {
@@ -98,14 +85,9 @@ module.exports = class EvalCommand extends Command {
       .replace(this.sensitivePattern, "--snip--");
     const split = inspected.split("\n");
     const last = inspected.length - 1;
-    const prependPart =
-      inspected[0] !== "{" && inspected[0] !== "[" && inspected[0] !== "'"
-        ? split[0]
-        : inspected[0];
+    const prependPart = inspected[0] !== "{" && inspected[0] !== "[" && inspected[0] !== "'" ? split[0] : inspected[0];
     const appendPart =
-      inspected[last] !== "}" &&
-      inspected[last] !== "]" &&
-      inspected[last] !== "'"
+      inspected[last] !== "}" && inspected[last] !== "]" && inspected[last] !== "'"
         ? split[split.length - 1]
         : inspected[last];
     const prepend = `\`\`\`javascript\n${prependPart}\n`;
@@ -135,8 +117,7 @@ module.exports = class EvalCommand extends Command {
     } else {
       return discord.splitMessage(
         tags.stripIndents`
-				*Callback executed after ${hrDiff[0] > 0 ? `${hrDiff[0]}s ` : ""}${hrDiff[1] /
-          1000000}ms.*
+				*Callback executed after ${hrDiff[0] > 0 ? `${hrDiff[0]}s ` : ""}${hrDiff[1] / 1000000}ms.*
 				\`\`\`javascript
 				${inspected}
 				\`\`\`

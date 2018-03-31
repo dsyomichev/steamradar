@@ -8,9 +8,8 @@ module.exports = class ErrorListener extends Listener {
   }
 
   exec(err, msg, cmd) {
-    this.client.logger.error(`Command Error | ${err} [ ${cmd} ]`);
-    msg.util.send(
-      `Something went wrong during the process of running the command.\nTo get this fixed ASAP, please join the support server and report the error.\nhttps://discord.gg/XrW5hqK`
-    );
+    console.log(err);
+    this.client.log.error(`Command Error | ${err} [ ${cmd} ]`);
+    return msg.util.error(err);
   }
 };

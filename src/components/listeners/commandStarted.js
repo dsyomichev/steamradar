@@ -8,6 +8,6 @@ module.exports = class CommandStartedListener extends Listener {
   }
 
   exec(msg, cmd, args) {
-    this.client.logger.debug(`Command Run | ${cmd} [ ${JSON.stringify(args)} ]`);
+    this.client.log.debug(`Command Run | ${cmd} [ ${JSON.stringify(args)} ]`);
   }
 };
