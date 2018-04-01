@@ -25,13 +25,13 @@ module.exports = class InfoCommand extends Command {
       title: "SteamRadar Stats",
       fields: [
         {
-          name: "Uptime:",
-          value: uptime,
+          name: "Memory:",
+          value: memory,
           inline: true
         },
         {
-          name: "Memory:",
-          value: memory,
+          name: "Uptime:",
+          value: uptime,
           inline: true
         },
         {
