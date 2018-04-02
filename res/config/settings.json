@@ -3,5 +3,7 @@
   "defaults": {
     "prefix": "sr!",
     "location": "US"
-  }
+  },
+  "invite": "https://steamradar.io/invite",
+  "server": "https://discord.gg/XrW5hqK"
 }

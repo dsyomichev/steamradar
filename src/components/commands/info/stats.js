@@ -1,8 +1,7 @@
-const Command = require("../../../structure/Command.js");
 const moment = require("moment");
 require("moment-duration-format");
-
-module.exports = class InfoCommand extends Command {
+const path = require("path");
+module.exports = class StatsCommand extends require(path.resolve("src/structure/Command")) {
   constructor() {
     super("stats", {
       aliases: ["stats"],

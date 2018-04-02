@@ -37,7 +37,14 @@ module.exports = class CommandUtil extends require("discord-akairo").CommandUtil
     return this.embed({
       color: this.styles.deny,
       title: "Oops, something went really wrong.",
-      description: this.message.author.id == this.client.ownerID ? `\`${err.name}: ${err.message}\`` : "Report this error here: \nhttps://discord.gg/XrW5hqK"
+      description: this.message.author.id == this.client.ownerID ? `\`${err.name}: ${err.message}\`` : `Report this error here: \n${this.client.invite}`
+    });
+  }
+
+  searching() {
+    return this.embed({
+      color: this.styles.accept,
+      title: "Searching..."
     });
   }
 };

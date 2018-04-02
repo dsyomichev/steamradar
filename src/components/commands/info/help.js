@@ -1,6 +1,5 @@
-const Command = require("../../../structure/Command.js");
-
-module.exports = class HelpCommand extends Command {
+const path = require("path");
+module.exports = class HelpCommand extends require(path.resolve("src/structure/Command")) {
   constructor() {
     super("help", {
       aliases: ["help"],
@@ -45,7 +44,9 @@ module.exports = class HelpCommand extends Command {
     } else {
       return msg.util.accept({
         title: "SteamRadar Help",
-        description: `**Commands:**\nhttps://steamradar.io/commands\nLearn about how to read the documentation here: https://steamradar.io/help/docs\n\n**Support**\nhttps://discord.gg/XrW5hqK\nFor help use \`#help\`\nFor reporting bugs use \`#bugs\`\nFor request features use \`#requests\`\n\n**Help Command**\n\`${prefix}help {(Command Name)}\` - Shows the built in documentation for the command.`
+        description: `**Commands:**\nhttps://steamradar.io/commands\nLearn about how to read the documentation here: https://steamradar.io/help/docs\n\n**Support**\n${
+          this.client.server
+        }\nFor help use \`#help\`\nFor reporting bugs use \`#bugs\`\nFor request features use \`#requests\`\n\n**Help Command**\n\`${prefix}help {(Command Name)}\` - Shows the built in documentation for the command.`
       });
     }
   }

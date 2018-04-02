@@ -1,5 +1,5 @@
-const Command = require("../../../structure/Command.js");
-module.exports = class PrefixCommand extends Command {
+const path = require("path");
+module.exports = class PrefixCommand extends require(path.resolve("src/structure/Command")) {
   constructor() {
     super("prefix", {
       aliases: ["prefix"],

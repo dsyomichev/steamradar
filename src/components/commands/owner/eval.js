@@ -1,15 +1,12 @@
 //Credit for eval goes to Discord.JS Commando
-
 const util = require("util");
 const discord = require("discord.js");
 const tags = require("common-tags");
 const escapeRegex = require("escape-string-regexp");
-const Command = require("../../../structure/Command.js");
-
 const nl = "!!NL!!";
 const nlPattern = new RegExp(nl, "g");
-
-module.exports = class EvalCommand extends Command {
+const path = require("path");
+module.exports = class EvalCommand extends require(path.resolve("src/structure/Command")) {
   constructor() {
     super("eval", {
       aliases: ["eval"],
@@ -86,10 +83,7 @@ module.exports = class EvalCommand extends Command {
     const split = inspected.split("\n");
     const last = inspected.length - 1;
     const prependPart = inspected[0] !== "{" && inspected[0] !== "[" && inspected[0] !== "'" ? split[0] : inspected[0];
-    const appendPart =
-      inspected[last] !== "}" && inspected[last] !== "]" && inspected[last] !== "'"
-        ? split[split.length - 1]
-        : inspected[last];
+    const appendPart = inspected[last] !== "}" && inspected[last] !== "]" && inspected[last] !== "'" ? split[split.length - 1] : inspected[last];
     const prepend = `\`\`\`javascript\n${prependPart}\n`;
     const append = `\n${appendPart}\n\`\`\``;
     if (input) {

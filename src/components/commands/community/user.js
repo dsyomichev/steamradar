@@ -1,13 +1,12 @@
-const Command = require("../../../structure/Command.js");
-
-module.exports = class UserCommand extends Command {
+const path = require("path");
+module.exports = class UserCommand extends require(path.resolve("src/structure/Command")) {
   constructor() {
     super("user", {
       aliases: ["user"],
       description: "Search for a user by SteamID64, CustomURL ID, or username.",
       format: "user [(SteamID) OR (CustomID) OR (Username)]",
       examples: ["user carrotstress -i", "user 76561198205315656", "user Grumpy Cat --username"],
-      steam: true,
+      api: true,
       details: "Search for a user by SteamID64, CustomURL ID, or username.",
       args: [
         {
@@ -32,15 +31,13 @@ module.exports = class UserCommand extends Command {
   }
 
   async exec(msg, { user, id, username }) {
-    let search = await msg.util.accept({ title: "Searching..." });
-
+    let search = await msg.util.searching();
+    if (!user) return msg.util.deny({ title: "Default ID not set.", description: "You need to set a default ID before using this command without an input." });
     let steamid;
     if (id) steamid = await this.client.steam.resolveUser(user, "id");
     else if (username) steamid = await this.client.steam.resolveUser(user, "username");
     else steamid = await this.client.steam.resolveUser(user);
-
-    if (!steamid) {
-      return msg.util.deny({ title: "User not found.", description: "The ID or username provided did not point to any Steam user." });
-    }
+    if (!steamid) return msg.util.deny({ title: "User not found.", description: "The ID or username provided did not point to any Steam user." });
+    msg.util.send(steamid);
   }
 };

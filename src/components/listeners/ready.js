@@ -1,5 +1,4 @@
-const { Listener } = require("discord-akairo");
-module.exports = class ReadyListener extends Listener {
+module.exports = class ReadyListener extends require("discord-akairo").Listener {
   constructor() {
     super("ready", {
       emitter: "client",

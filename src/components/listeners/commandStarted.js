@@ -1,5 +1,4 @@
-const { Listener } = require("discord-akairo");
-module.exports = class CommandStartedListener extends Listener {
+module.exports = class CommandStartedListener extends require("discord-akairo").Listener {
   constructor() {
     super("commandStarted", {
       emitter: "commandHandler",

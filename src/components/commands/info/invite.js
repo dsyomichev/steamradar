@@ -1,6 +1,5 @@
-const Command = require("../../../structure/Command.js");
-
-module.exports = class InfoCommand extends Command {
+const path = require("path");
+module.exports = class InviteCommand extends require(path.resolve("src/structure/Command")) {
   constructor() {
     super("invite", {
       aliases: ["invite"],
@@ -14,7 +13,7 @@ module.exports = class InfoCommand extends Command {
   exec(msg) {
     msg.util.confirm({
       title: "SteamRadar Invites",
-      description: "Add SteamRadar using this link:\nhttps://steamradar.io/invite\n\nJoin the support server using this link:\nhttps://discord.gg/XrW5hqK"
+      description: `Add SteamRadar using this link:\n${this.client.invite}\n\nJoin the support server using this link:\n${this.client.server}`
     });
   }
 };

@@ -10,14 +10,16 @@ const CommandHandler = require(path.resolve("src/structure/CommandHandler"));
 module.exports = class Client extends AkairoClient {
   constructor(options = {}, clientOptions) {
     super(options, clientOptions);
-    let { logDirectory, configDirectory } = options;
+    let { logDirectory, configDirectory, dataDirectory } = options;
     this.log = new Logger(logDirectory);
-
     this.configDirectory = configDirectory;
-    let { version, defaults } = require(path.join(this.configDirectory, "settings"));
+    this.dataDirectory = dataDirectory;
+    let { version, defaults, invite, server } = require(path.join(this.configDirectory, "settings"));
 
     this.version = version;
     this.defaults = defaults;
+    this.invite = invite;
+    this.server = server;
   }
 
   build() {

@@ -1,6 +1,6 @@
-const Command = require("../../../structure/Command.js");
+const path = require("path");
 const cc = require("../../../../res/data/countries.json");
-module.exports = class LocationCommand extends Command {
+module.exports = class LocationCommand extends require(path.resolve("src/structure/Command")) {
   constructor() {
     super("location", {
       aliases: ["location"],
@@ -37,7 +37,7 @@ module.exports = class LocationCommand extends Command {
         return this.client.provider.get("guild", msg.guild.id, "location", def);
       }
     };
-    
+
     const norm = code => {
       let country = cc[code];
       if (!country) return;

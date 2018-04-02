@@ -23,7 +23,8 @@ const client = new Client(
     inhibitorDirectory: path.resolve("src/components/inhibitors/"),
     listenerDirectory: path.resolve("src/components/listeners/"),
     logDirectory: path.resolve("log"),
-    configDirectory: path.resolve("res/config")
+    configDirectory: path.resolve("res/config"),
+    dataDirectory: path.resolve("res/data")
   },
   {
     disableEveryone: true

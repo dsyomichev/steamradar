@@ -1,8 +1,6 @@
-const { Inhibitor } = require("discord-akairo");
-
-module.exports = class sendMessages extends Inhibitor {
+module.exports = class sendMessages extends require("discord-akairo").Inhibitor {
   constructor() {
-    super("perms", {
+    super("send_messages", {
       reason: "send_messages"
     });
   }
