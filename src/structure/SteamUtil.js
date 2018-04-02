@@ -1,10 +1,11 @@
 const rp = require("request-promise");
 const cheerio = require("cheerio");
 const tough = require("tough-cookie");
+const path = require("path");
 
-const SteamQuery = require("../../lib/SteamQuery");
+const SteamQuery = require(path.resolve("lib/SteamQuery"));
 
-module.exports = class SteamUtil extends require("../../lib/SteamAPI") {
+module.exports = class SteamUtil extends require(path.resolve("lib/SteamAPI")) {
   constructor({ key, sessionid, jar }) {
     super(key);
     this.query = new SteamQuery();

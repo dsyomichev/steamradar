@@ -29,14 +29,6 @@ module.exports = class PrefixCommand extends require(path.resolve("src/structure
   async exec(msg, { prefix, guild, user }) {
     const def = this.client.defaults.prefix;
 
-    const getPrefix = type => {
-      if (type == "user") {
-        return this.client.provider.get("user", msg.author.id, "prefix", def);
-      } else if (type == "guild") {
-        return this.client.provider.get("guild", msg.guild.id, "prefix", def);
-      }
-    };
-
     if (guild && !msg.guild) {
       return msg.util.deny({ title: "Invalid Channel", description: "You need to be in a server to use a server prefix." });
     }
@@ -50,8 +42,8 @@ module.exports = class PrefixCommand extends require(path.resolve("src/structure
       return msg.util.deny({ title: "Prefix Too Long", description: `Prefix should be under 10 characters long. You are ${prefix.length - 10} characters over!` });
     }
     if (!prefix) {
-      let guildPrefix = msg.guild ? getPrefix("guild") : null;
-      let userPrefix = getPrefix("user");
+      let guildPrefix = msg.guild ? this.getLocation("guild", msg.guild.id) : null;
+      let userPrefix = this.getLocation("guild", msg.author.id);
       let userPrefixString = `Your user prefix is \`${userPrefix}\``;
       let guildPrefixString = `The server prefix is \`${guildPrefix}\``;
       let mentionString = `The default prefix \`${def}\` is always available. A mention \`@${this.client.user.tag}\` will also work instead of a prefix. `;
