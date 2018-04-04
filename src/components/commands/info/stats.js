@@ -47,7 +47,7 @@ module.exports = class StatsCommand extends require(path.resolve("src/structure/
       thumbnail: {
         url: this.client.user.displayAvatarURL()
       },
-      color: msg.util.styles.confirm
+      color: msg.util.colors.confirm
     });
   }
 };

@@ -129,9 +129,4 @@ module.exports = class SteamUtil extends require(path.resolve("lib/SteamAPI")) {
       return "Looking to Play";
     }
   }
-
-  resolvePrivacy(privacy) {
-    if (privacy == 1) return true;
-    return false;
-  }
 };

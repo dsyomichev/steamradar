@@ -2,7 +2,9 @@ const path = require("path");
 module.exports = class CommandUtil extends require("discord-akairo").CommandUtil {
   constructor(client, message) {
     super(client, message);
-    this.styles = require(path.join(client.configDirectory, "styles"));
+    let styles = require(path.join(client.configDirectory, "styles"));
+    this.colors = styles.colors;
+    this.emoji = styles.emoji;
   }
 
   embed(embed) {
@@ -11,7 +13,7 @@ module.exports = class CommandUtil extends require("discord-akairo").CommandUtil
 
   confirm({ title, description }) {
     return this.embed({
-      color: this.styles.confirm,
+      color: this.colors.confirm,
       title,
       description
     });
@@ -19,7 +21,7 @@ module.exports = class CommandUtil extends require("discord-akairo").CommandUtil
 
   accept({ title, description }) {
     return this.embed({
-      color: this.styles.accept,
+      color: this.colors.accept,
       title,
       description
     });
@@ -27,7 +29,7 @@ module.exports = class CommandUtil extends require("discord-akairo").CommandUtil
 
   deny({ title, description }) {
     return this.embed({
-      color: this.styles.deny,
+      color: this.colors.deny,
       title,
       description
     });
@@ -35,7 +37,7 @@ module.exports = class CommandUtil extends require("discord-akairo").CommandUtil
 
   error(err) {
     return this.embed({
-      color: this.styles.deny,
+      color: this.colors.deny,
       title: "Oops, something went really wrong.",
       description: this.message.author.id == this.client.ownerID ? `\`${err.name}: ${err.message}\`` : `Report this error here: \n${this.client.invite}`
     });
@@ -43,7 +45,7 @@ module.exports = class CommandUtil extends require("discord-akairo").CommandUtil
 
   searching() {
     return this.embed({
-      color: this.styles.accept,
+      color: this.colors.accept,
       title: "Searching..."
     });
   }
