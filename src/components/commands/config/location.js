@@ -45,7 +45,7 @@ module.exports = class LocationCommand extends require(path.resolve("src/structu
     }
     if (!location) {
       let guildLocation = msg.guild ? this.getLocation("guild", msg.guild.id) : null;
-      let userLocation = this.getLocation("guild", msg.author.id);
+      let userLocation = this.getLocation("user", msg.author.id);
       let userLocationString = `Your user location is **${this.normalizeCC(userLocation)}** :flag_${userLocation ? userLocation.toLowerCase() : ""}:`;
       let guildLocationString = `The server location is **${this.normalizeCC(guildLocation)}** :flag_${guildLocation ? guildLocation.toLowerCase() : ""}:`;
 

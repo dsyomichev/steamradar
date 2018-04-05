@@ -200,4 +200,31 @@ module.exports = class SteamUtil extends require(path.resolve("lib/SteamAPI")) {
       });
     });
   }
+
+  storePage(appid, location) {
+    return new Promise(async (resolve, reject) => {
+      let result;
+      try {
+        result = JSON.parse(await rp(`http://store.steampowered.com/api/appdetails?appids=${appid}&cc=${location}`));
+      } catch (err) {
+        reject(err);
+      }
+      if (!result[appid].success) return resolve(null);
+      return resolve(result);
+    });
+  }
+
+  appReviews(appid) {
+    return new Promise(async (resolve, reject) => {
+      let result;
+      try {
+        result = JSON.parse(await rp(`http://store.steampowered.com/appreviews/${appid}`));
+      } catch (err) {
+        reject(err);
+      }
+      let $ = cheerio.load(result.review_score);
+      let review = $(".game_review_summary").attr("data-tooltip-text");
+      return resolve(parseInt(review.substring(0, review.indexOf("%"))));
+    });
+  }
 };

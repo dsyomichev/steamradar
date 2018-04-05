@@ -15,7 +15,7 @@ module.exports = class Client extends AkairoClient {
     this.configDirectory = configDirectory;
     this.dataDirectory = dataDirectory;
     let { version, defaults, invite, server } = require(path.join(this.configDirectory, "settings"));
-    this.data = { cc: require(path.join(this.dataDirectory, "countries")) };
+    this.data = { cc: require(path.join(this.dataDirectory, "countries")), cur: require(path.join(this.dataDirectory, "currency")) };
 
     this.version = version;
     this.defaults = defaults;
