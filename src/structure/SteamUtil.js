@@ -41,7 +41,14 @@ module.exports = class SteamUtil extends require(path.resolve("lib/SteamAPI")) {
     return new Promise(async (resolve, reject) => {
       if (input == "id") {
         if (user.match(/^[0-9]+$/) && user.length === 17) {
-          resolve(user);
+          let summary;
+          try {
+            summary = await this.GetPlayerSummaries({ steamids: user });
+          } catch (err) {
+            return reject(err);
+          }
+          if (summary.response.players.length == 0) return resolve(null);
+          return resolve(user);
         } else {
           let res;
           try {
@@ -74,10 +81,23 @@ module.exports = class SteamUtil extends require(path.resolve("lib/SteamAPI")) {
         let url = $("div.avatarMedium a").attr("href");
         url = url.slice(26);
         if (url.substring(0, 9) == "profiles/") return resolve(url.slice(9));
-        return resolve(url.slice(3));
+        let id = url.slice(3);
+        try {
+          id = await this.ResolveVanityURL({ vanityurl: id });
+        } catch (err) {
+          return reject(err);
+        }
+        return resolve(id.response.steamid);
       }
       if (user.match(/^[0-9]+$/) && user.length === 17) {
-        resolve(user);
+        let summary;
+        try {
+          summary = await this.GetPlayerSummaries({ steamids: user });
+        } catch (err) {
+          return reject(err);
+        }
+        if (summary.response.players.length == 0) return resolve(null);
+        return resolve(user);
       } else {
         let res;
         try {
@@ -107,7 +127,13 @@ module.exports = class SteamUtil extends require(path.resolve("lib/SteamAPI")) {
         let url = $("div.avatarMedium a").attr("href");
         url = url.slice(26);
         if (url.substring(0, 9) == "profiles/") return resolve(url.slice(9));
-        return resolve(url.slice(3));
+        let id = url.slice(3);
+        try {
+          id = await this.ResolveVanityURL({ vanityurl: id });
+        } catch (err) {
+          return reject(err);
+        }
+        return resolve(id.response.steamid);
       }
     });
   }
@@ -128,5 +154,31 @@ module.exports = class SteamUtil extends require(path.resolve("lib/SteamAPI")) {
     } else if (state === 6) {
       return "Looking to Play";
     }
+  }
+
+  resolveGame(game) {
+    return new Promise(async (resolve, reject) => {
+      if (game.match(/^[0-9]+$/) && game.length === 6) {
+        let storepage;
+        try {
+          storepage = await rp(`http://store.steampowered.com/api/appdetails?appids=${game}`);
+        } catch (err) {
+          return reject(err);
+        }
+        if (storepage[game].success == false) return resolve(null);
+        return resolve(game);
+      } else {
+        let res;
+        try {
+          res = await rp(`http://store.steampowered.com/search/results/?term=${game}&category1=998%2C994`);
+        } catch (err) {
+          reject(err);
+        }
+        let $ = cheerio.load(res);
+        let result = $(".search_result_row").attr("data-ds-appid");
+        if (!result) return resolve(null);
+        return resolve(result);
+      }
+    });
   }
 };
