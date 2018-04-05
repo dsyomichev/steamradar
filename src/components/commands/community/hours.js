@@ -1,6 +1,6 @@
 const path = require("path");
 const moment = require("moment");
-module.exports = class UserCommand extends require(path.resolve("src/structure/Command")) {
+module.exports = class HoursCommand extends require(path.resolve("src/structure/Command")) {
   constructor() {
     super("hours", {
       aliases: ["hours"],

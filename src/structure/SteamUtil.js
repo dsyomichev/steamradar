@@ -181,4 +181,23 @@ module.exports = class SteamUtil extends require(path.resolve("lib/SteamAPI")) {
       }
     });
   }
+  searchItem(name) {
+    return new Promise(async (resolve, reject) => {
+      let result;
+      try {
+        result = JSON.parse(await rp(`http://steamcommunity.com/market/search/render/?query=${name}&start=0&count=1&norender=1`));
+      } catch (err) {
+        reject(err);
+      }
+      return resolve({
+        name: result.results[0].name,
+        icon: `http://community.edgecast.steamstatic.com/economy/image/${result.results[0].asset_description.icon_url}`,
+        game: result.results[0].app_name,
+        price: result.results[0].sell_price_text,
+        listings: result.results[0].sell_listings,
+        color: result.results[0].asset_description.name_color,
+        order: result.results[0].sale_price_text
+      });
+    });
+  }
 };
