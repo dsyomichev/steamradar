@@ -33,7 +33,7 @@ module.exports = class UserCommand extends require(path.resolve("src/structure/C
   }
 
   async exec(msg, { user, id, username }) {
-    let search = await msg.util.searching();
+    msg.util.searching();
     if (!user) return msg.util.deny({ title: "Default ID not set.", description: "You need to set a default ID before using this command without an input." });
     let steamid;
     if (id) steamid = await this.client.steam.resolveUser(user, "id");
