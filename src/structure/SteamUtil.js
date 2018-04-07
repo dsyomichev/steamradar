@@ -227,4 +227,149 @@ module.exports = class SteamUtil extends require(path.resolve("lib/SteamAPI")) {
       return resolve(parseInt(review.substring(0, review.indexOf("%"))));
     });
   }
+
+  storeNew(count) {
+    return new Promise(async (resolve, reject) => {
+      let result;
+      try {
+        result = await rp("http://store.steampowered.com/search/results/?filter=popularnew&sort_by=Released_DESC");
+      } catch (err) {
+        reject(err);
+      }
+      let $ = cheerio.load(result);
+      let links = $("#search_result_container div a").toArray();
+      let images = $("#search_result_container div a .search_capsule img").toArray();
+      let names = $("#search_result_container div a .responsive_search_name_combined .search_name .title").toArray();
+      let prices = $("#search_result_container div a .responsive_search_name_combined .search_price")
+        .map((i, e) => {
+          return $(e)
+            .clone()
+            .children()
+            .remove()
+            .end()
+            .text()
+            .trim();
+        })
+        .get();
+      count = count ? (count > links.length ? links.length : count) : links.length;
+      let games = [];
+      for (let i = 0; i < count; i++) {
+        games.push({
+          appid: links[i].attribs["data-ds-appid"],
+          link: links[i].attribs.href,
+          img: images[i].attribs.src,
+          name: names[i].children[0].data,
+          price: prices[i]
+        });
+      }
+      return resolve(games);
+    });
+  }
+  storeTop(count) {
+    return new Promise(async (resolve, reject) => {
+      let result;
+      try {
+        result = await rp("http://store.steampowered.com/search/results/?filter=topsellers");
+      } catch (err) {
+        reject(err);
+      }
+      let $ = cheerio.load(result);
+      let links = $("#search_result_container div a").toArray();
+      let images = $("#search_result_container div a .search_capsule img").toArray();
+      let names = $("#search_result_container div a .responsive_search_name_combined .search_name .title").toArray();
+      let prices = $("#search_result_container div a .responsive_search_name_combined .search_price")
+        .map((i, e) => {
+          return $(e)
+            .clone()
+            .children()
+            .remove()
+            .end()
+            .text()
+            .trim();
+        })
+        .get();
+
+      count = count ? (count > links.length ? links.length : count) : links.length;
+      let games = [];
+      for (let i = 0; i < count; i++) {
+        games.push({
+          appid: links[i].attribs["data-ds-appid"],
+          link: links[i].attribs.href,
+          img: images[i].attribs.src,
+          name: names[i].children[0].data,
+          price: prices[i]
+        });
+      }
+      return resolve(games);
+    });
+  }
+  storeUpcoming(count) {
+    return new Promise(async (resolve, reject) => {
+      let result;
+      try {
+        result = await rp("http://store.steampowered.com/search/results/?filter=comingsoon");
+      } catch (err) {
+        reject(err);
+      }
+      let $ = cheerio.load(result);
+      let links = $("#search_result_container div a").toArray();
+      let images = $("#search_result_container div a .search_capsule img").toArray();
+      let names = $("#search_result_container div a .responsive_search_name_combined .search_name .title").toArray();
+      let dates = $("#search_result_container div a .responsive_search_name_combined .search_released").toArray();
+
+      count = count ? (count > links.length ? links.length : count) : links.length;
+      let games = [];
+      for (let i = 0; i < count; i++) {
+        games.push({
+          appid: links[i].attribs["data-ds-appid"],
+          link: links[i].attribs.href,
+          img: images[i].attribs.src,
+          name: names[i].children[0].data,
+          date: dates[i].children[0].data
+        });
+      }
+      return resolve(games);
+    });
+  }
+  storeSale(count) {
+    return new Promise(async (resolve, reject) => {
+      let result;
+      try {
+        result = await rp("http://store.steampowered.com/search/results/?filter=topsellers");
+      } catch (err) {
+        reject(err);
+      }
+      let $ = cheerio.load(result);
+      let links = $("#search_result_container div a").toArray();
+      let images = $("#search_result_container div a .search_capsule img").toArray();
+      let names = $("#search_result_container div a .responsive_search_name_combined .search_name .title").toArray();
+      let prices = $("#search_result_container div a .responsive_search_name_combined .search_price")
+        .map((i, e) => {
+          return $(e)
+            .clone()
+            .children()
+            .remove()
+            .end()
+            .text()
+            .trim();
+        })
+        .get();
+      let discounts = $("#search_result_container div a .responsive_search_name_combined .search_price_discount_combined .search_discount span").toArray();
+      count = count ? (count > links.length ? links.length : count) : links.length;
+      let games = [];
+      for (let i = 0; i < count; i++) {
+        games.push({
+          appid: links[i].attribs["data-ds-appid"],
+          link: links[i].attribs.href,
+          img: images[i].attribs.src,
+          name: names[i].children[0].data,
+          price: prices[i],
+          discount: discounts[i].children[0].data
+        });
+      }
+      return resolve(games);
+    });
+  }
+
+  storeStats() {}
 };

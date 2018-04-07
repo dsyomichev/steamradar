@@ -1,5 +1,5 @@
 const path = require("path");
-module.exports = class GameCommand extends require(path.resolve("src/structure/Command")) {
+module.exports = class AchieveCommand extends require(path.resolve("src/structure/Command")) {
   constructor() {
     super("achieve", {
       aliases: ["achieve"],

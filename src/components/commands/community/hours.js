@@ -60,9 +60,9 @@ module.exports = class HoursCommand extends require(path.resolve("src/structure/
         })
         .reverse();
 
-      let top = "\u200b\n";
+      let top = "";
       for (let i = 0; i < (total.length > 5 ? 5 : total.length); i++) {
-        top += `**${total[i].name}**: ${Math.round(total[i].playtime_forever / 60)} Hours\n\n`;
+        top += `${i + 1}. ${total[i].name} - **${Math.round(total[i].playtime_forever / 60)} Hours**\n`;
       }
       msg.util.embed({
         title: "Top 5 played games.",
