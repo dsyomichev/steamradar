@@ -126,7 +126,8 @@ module.exports = class SteamUtil extends require(path.resolve("lib/SteamAPI")) {
         let $ = cheerio.load(res.html);
         let url = $("div.avatarMedium a").attr("href");
         url = url.slice(26);
-        if (url.substring(0, 9) == "profiles/") return resolve(url.slice(9));
+        if (url.substring(0, 10) == "/profiles/") return resolve(url.slice(10));
+        console.log(url);
         let id = url.slice(3);
         try {
           id = await this.ResolveVanityURL({ vanityurl: id });

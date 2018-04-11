@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 module.exports = class Logger extends winston.Logger {
   constructor(dir) {
-    if (!dir || !fs.existsSync(dir)) throw new Error(`Invalid Directory | "${dir}"`);
+    fs.existsSync(dir) || fs.mkdirSync(dir);
     const ts = () => new Date().toLocaleTimeString();
     super({
       transports: [
