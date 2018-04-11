@@ -80,7 +80,7 @@ module.exports = class SteamUtil extends require(path.resolve("lib/SteamAPI")) {
         let $ = cheerio.load(res.html);
         let url = $("div.avatarMedium a").attr("href");
         url = url.slice(26);
-        if (url.substring(0, 9) == "profiles/") return resolve(url.slice(9));
+        if (url.substring(0, 10) == "/profiles/") return resolve(url.slice(10));
         let id = url.slice(3);
         try {
           id = await this.ResolveVanityURL({ vanityurl: id });
@@ -192,7 +192,7 @@ module.exports = class SteamUtil extends require(path.resolve("lib/SteamAPI")) {
       }
       return resolve({
         name: result.results[0].name,
-        icon: `http://community.edgecast.steamstatic.com/economy/image/${result.results[0].asset_description.icon_url}`,
+        icon: `https://steamcommunity-a.akamaihd.net/economy/image/${result.results[0].asset_description.icon_url}`,
         game: result.results[0].app_name,
         price: result.results[0].sell_price_text,
         listings: result.results[0].sell_listings,

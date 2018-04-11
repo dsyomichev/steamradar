@@ -92,7 +92,7 @@ module.exports = class UserCommand extends require(path.resolve("src/structure/C
       let recent = await requests.recent;
       recent = recent.response.games;
       let owned = await requests.owned;
-      owned = owned.response.game_count;
+      owned = owned.response.game_count || "None";
 
       let recently_played = "";
       if (recent) {
