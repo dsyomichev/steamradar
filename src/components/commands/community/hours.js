@@ -53,6 +53,7 @@ module.exports = class HoursCommand extends require(path.resolve("src/structure/
 
     if ((summary.private = summary.communityvisibilitystate == 3 ? true : false))
       return msg.util.deny({ title: "Private Profile", description: "The user's profile is set to private. Game hours cannot be viewed." });
+    if (!owned) return msg.util.deny({ title: "Private Game Library", description: "The user's game library is set to private. Game hours cannot be viewed." });
     if (!game) {
       let total = owned
         .sort((a, b) => {
@@ -93,7 +94,7 @@ module.exports = class HoursCommand extends require(path.resolve("src/structure/
           },
           {
             name: "Last Two Weeks",
-            value: `${Math.round(app.playtime_2weeks / 60)} Hours`,
+            value: `${Math.round(app.playtime_2weeks || 0 / 60)} Hours`,
             inline: true
           }
         ],

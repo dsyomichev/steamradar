@@ -1,4 +1,5 @@
 const path = require("path");
+const rp = require("request-promise");
 
 const Provider = require(path.resolve("lib/RethinkProvider"));
 const SteamUtil = require(path.resolve("src/structure/SteamUtil"));
@@ -14,13 +15,15 @@ module.exports = class Client extends AkairoClient {
     this.log = new Logger(logDirectory);
     this.configDirectory = configDirectory;
     this.dataDirectory = dataDirectory;
-    let { version, defaults, invite, server } = require(path.join(this.configDirectory, "settings"));
+    let { version, defaults, invite, server, upvote, dev } = require(path.join(this.configDirectory, "settings"));
     this.data = { cc: require(path.join(this.dataDirectory, "countries")), cur: require(path.join(this.dataDirectory, "currency")) };
 
     this.version = version;
     this.defaults = defaults;
     this.invite = invite;
+    this.upvote = upvote;
     this.server = server;
+    this.dev = dev;
   }
 
   build() {
@@ -57,10 +60,12 @@ module.exports = class Client extends AkairoClient {
     return this;
   }
 
-  async start({ discord, steam }) {
+  async start({ discord, steam, site, lists }) {
+    this.lists = lists;
+    this.site_token = site;
     this.startSession(steam);
     this.setProvider();
-    this.login(discord);
+    await this.login(discord);
   }
 
   async startSession(key) {
@@ -82,7 +87,7 @@ module.exports = class Client extends AkairoClient {
   }
 
   async setProvider(host = "localhost", port = 28015) {
-    this.provider = new Provider(host, port);
+    this.provider = new Provider({ db: "steamradar", tables: ["user", "guild"] });
     if (this.readyTimestamp) {
       this.log.debug(`Provider set to ${this.provider.constructor.name}`);
       try {
@@ -99,5 +104,27 @@ module.exports = class Client extends AkairoClient {
         resolve(this.provider.init());
       });
     });
+  }
+
+  async postGuilds() {
+    if (this.dev) return;
+
+    rp({
+      method: "POST",
+      uri: `https://discordbots.org/api/bots/${this.user.id}/stats`,
+      headers: { Authorization: this.lists.dbl },
+      body: { server_count: this.guilds.size },
+      json: true
+    }).then(() => this.debug("Updated DBL guild count."), () => this.log.warn("Unable to update DBL guild count."));
+
+    rp({
+      method: "POST",
+      uri: `https://bots.discord.pw/api/bots/${this.user.id}/stats`,
+      headers: { Authorization: this.lists.bpw },
+      body: { server_count: this.guilds.size },
+      json: true
+    }).then(() => this.log.debug("Updated BPW guild count."), () => this.log.warn("Unable to update BPW guild count."));
+
+    return;
   }
 };

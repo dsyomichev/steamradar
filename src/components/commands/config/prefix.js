@@ -42,8 +42,8 @@ module.exports = class PrefixCommand extends require(path.resolve("src/structure
       return msg.util.deny({ title: "Prefix Too Long", description: `Prefix should be under 10 characters long. You are ${prefix.length - 10} characters over!` });
     }
     if (!prefix) {
-      let guildPrefix = msg.guild ? this.getLocation("guild", msg.guild.id) : null;
-      let userPrefix = this.getLocation("guild", msg.author.id);
+      let guildPrefix = msg.guild ? this.getPrefix("guild", msg.guild.id) : null;
+      let userPrefix = this.getPrefix("user", msg.author.id);
       let userPrefixString = `Your user prefix is \`${userPrefix}\``;
       let guildPrefixString = `The server prefix is \`${guildPrefix}\``;
       let mentionString = `The default prefix \`${def}\` is always available. A mention \`@${this.client.user.tag}\` will also work instead of a prefix. `;

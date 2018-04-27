@@ -1,6 +1,5 @@
 const path = require("path");
 const Client = require(path.resolve("src/structure/Client"));
-const { discord, steam } = require(path.resolve("res/config/keys"));
 
 const getPrefix = msg => {
   let def = msg.client.defaults.prefix;
@@ -22,7 +21,7 @@ const client = new Client(
     commandDirectory: path.resolve("src/components/commands/"),
     inhibitorDirectory: path.resolve("src/components/inhibitors/"),
     listenerDirectory: path.resolve("src/components/listeners/"),
-    logDirectory: path.resolve("log"),
+    logDirectory: path.resolve("logs"),
     configDirectory: path.resolve("res/config"),
     dataDirectory: path.resolve("res/data")
   },
@@ -31,4 +30,4 @@ const client = new Client(
   }
 );
 
-client.start({ discord, steam });
+client.start(require(path.resolve("res/config/keys"))).then(() => client.postGuilds().then(() => setInterval(client.postGuilds, 600000)));

@@ -29,7 +29,7 @@ module.exports = class HelpCommand extends require(path.resolve("src/structure/C
       if (!command || (command.ownerOnly == true && msg.author.id != this.client.ownerID))
         return msg.util.deny({
           title: "Command not found.",
-          description: `\`${old}\` is not a command, check spelling or view the entire documentation here: https://steamradar.io/commands`
+          description: `\`${old}\` is not a command, check spelling or view the entire documentation here: https://www.steamradar.pw/commands`
         });
 
       let name = `${command.aliases[0].charAt(0).toUpperCase()}${command.aliases[0].slice(1)} Command`;
@@ -44,7 +44,7 @@ module.exports = class HelpCommand extends require(path.resolve("src/structure/C
     } else {
       return msg.util.accept({
         title: "SteamRadar Help",
-        description: `**Commands:**\nhttps://steamradar.io/commands\nLearn about how to read the documentation here: https://steamradar.io/help/docs\n\n**Support**\n${
+        description: `**Commands:**\nhttps://www.steamradar.pw/commands\n\n**Support**\n${
           this.client.server
         }\nFor help use \`#help\`\nFor reporting bugs use \`#bugs\`\nFor request features use \`#requests\`\n\n**Help Command**\n\`${prefix}help {(Command Name)}\` - Shows the built in documentation for the command.`
       });

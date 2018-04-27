@@ -4,6 +4,8 @@
     "prefix": "sr!",
     "location": "US"
   },
-  "invite": "https://steamradar.io/invite",
-  "server": "https://discord.gg/XrW5hqK"
+  "invite": "https://discordapp.com/api/oauth2/authorize?client_id=423559538231476224&permissions=0&scope=bot",
+  "server": "https://discord.gg/fp6eDym",
+  "upvote": "https://discordbots.org/bot/379109549514293248/vote",
+  "dev": true
 }

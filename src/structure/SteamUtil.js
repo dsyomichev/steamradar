@@ -127,7 +127,6 @@ module.exports = class SteamUtil extends require(path.resolve("lib/SteamAPI")) {
         let url = $("div.avatarMedium a").attr("href");
         url = url.slice(26);
         if (url.substring(0, 10) == "/profiles/") return resolve(url.slice(10));
-        console.log(url);
         let id = url.slice(3);
         try {
           id = await this.ResolveVanityURL({ vanityurl: id });
@@ -326,7 +325,7 @@ module.exports = class SteamUtil extends require(path.resolve("lib/SteamAPI")) {
           link: links[i].attribs.href,
           img: images[i].attribs.src,
           name: names[i].children[0].data,
-          date: dates[i].children[0].data
+          date: dates[i].children[0] ? dates[i].children[0].data : "Unknown"
         });
       }
       return resolve(games);

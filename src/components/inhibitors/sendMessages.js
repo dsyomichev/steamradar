@@ -1,4 +1,4 @@
-module.exports = class sendMessages extends require("discord-akairo").Inhibitor {
+module.exports = class SendMessages extends require("discord-akairo").Inhibitor {
   constructor() {
     super("send_messages", {
       reason: "send_messages"
