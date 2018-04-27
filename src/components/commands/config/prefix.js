@@ -35,7 +35,7 @@ module.exports = class PrefixCommand extends require(path.resolve("src/structure
     if (prefix && user && guild) {
       return msg.util.deny({ title: "Too Many Targets", description: `The server and user prefixes need to be changed separately.` });
     }
-    if (prefix && msg.guild && !msg.member.hasPermission("MANAGE_SERVER")) {
+    if (prefix && msg.guild && guild && !msg.member.hasPermission("MANAGE_SERVER")) {
       return msg.util.deny({ title: "Invalid Permissions", description: `You need to have the **Manage Server** permission to change the server prefix.` });
     }
     if (prefix && prefix.length > 10) {

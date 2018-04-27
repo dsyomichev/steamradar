@@ -36,7 +36,7 @@ module.exports = class LocationCommand extends require(path.resolve("src/structu
     if (location && user && guild) {
       return msg.util.deny({ title: "Too many targets.", description: "The server and user locations need to be changed separately." });
     }
-    if (location && msg.guild && !msg.member.hasPermission("MANAGE_SERVER")) {
+    if (location && msg.guild && guild && !msg.member.hasPermission("MANAGE_SERVER")) {
       return msg.util.deny({ title: "Invalid permissions.", description: "You need to have the **Manage Server** permission to change the server location." });
     }
     if (location && location.length == 2) location = location.toUpperCase();
