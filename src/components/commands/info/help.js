@@ -21,7 +21,7 @@ module.exports = class HelpCommand extends require(path.resolve("src/structure/C
   async exec(msg, { command }) {
     let prefix = "";
     if (msg.channel.type == "text") {
-      prefix = this.client.provider.get("user", msg.author.id, "prefix", this.client.provider.get("guild", msg.guild.id, "prefix", this.client.prefix));
+      prefix = this.client.provider.get("user", msg.author.id, "prefix", this.client.provider.get("guild", msg.guild.id, "prefix", this.client.defaults.prefix));
     }
     if (command) {
       let old = command;
@@ -46,7 +46,7 @@ module.exports = class HelpCommand extends require(path.resolve("src/structure/C
         title: "SteamRadar Help",
         description: `**Commands:**\nhttps://www.steamradar.pw/commands\n\n**Support**\n${
           this.client.server
-        }\nFor help use \`#help\`\nFor reporting bugs use \`#bugs\`\nFor request features use \`#requests\`\n\n**Help Command**\n\`${prefix}help {(Command Name)}\` - Shows the built in documentation for the command.`
+        }\n\n**Help Command**\n\`${prefix}help {(Command)}\` - Shows the built in documentation for the command.`
       });
     }
   }

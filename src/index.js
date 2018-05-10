@@ -30,4 +30,4 @@ const client = new Client(
   }
 );
 
-client.start(require(path.resolve("res/config/keys"))).then(() => client.postGuilds().then(() => setInterval(client.postGuilds, 600000)));
+client.start(require(path.resolve("res/config/keys"))).then(() => client.postGuilds().then(() => setInterval(() => client.postGuilds(), 60000)));

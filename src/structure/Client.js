@@ -109,7 +109,7 @@ module.exports = class Client extends AkairoClient {
   async postGuilds() {
     if (this.dev) return;
 
-    rp({
+    await rp({
       method: "POST",
       uri: `https://discordbots.org/api/bots/${this.user.id}/stats`,
       headers: { Authorization: this.lists.dbl },
@@ -117,13 +117,29 @@ module.exports = class Client extends AkairoClient {
       json: true
     }).then(() => this.debug("Updated DBL guild count."), () => this.log.warn("Unable to update DBL guild count."));
 
-    rp({
+    await rp({
       method: "POST",
       uri: `https://bots.discord.pw/api/bots/${this.user.id}/stats`,
       headers: { Authorization: this.lists.bpw },
       body: { server_count: this.guilds.size },
       json: true
     }).then(() => this.log.debug("Updated BPW guild count."), () => this.log.warn("Unable to update BPW guild count."));
+
+    await rp({
+      method: "POST",
+      uri: `https://botlist.space/api/api/bots/${this.user.id}`,
+      headers: { Authorization: this.lists.bds },
+      body: { server_count: this.guilds.size },
+      json: true
+    }).then(() => this.log.debug("Updated BDS guild count."), () => this.log.warn("Unable to update BDS guild count."));
+
+    await rp({
+      method: "POST",
+      uri: `https://botsfordiscord.com/api/v1/bots/${this.user.id}`,
+      headers: { Authorization: this.lists.bfd },
+      body: { server_count: this.guilds.size },
+      json: true
+    }).then(() => this.log.debug("Updated BFD guild count."), () => this.log.warn("Unable to update BFD guild count."));
 
     return;
   }

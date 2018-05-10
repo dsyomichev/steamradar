@@ -14,7 +14,7 @@ module.exports = class StatsCommand extends require(path.resolve("src/structure/
 
   async exec(msg) {
     let servers = this.client.guilds.size;
-    let channels = this.client.guilds.size;
+    let channels = this.client.channels.size;
     let users = this.client.guilds.map(guild => guild.memberCount).reduce((a, b) => a + b);
     let memory = `${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB`;
     let uptime = moment.duration(this.client.uptime).format("d[ Days], h[ Hours], m[ Minutes]");
