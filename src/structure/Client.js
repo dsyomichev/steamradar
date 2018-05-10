@@ -115,7 +115,7 @@ module.exports = class Client extends AkairoClient {
       headers: { Authorization: this.lists.dbl },
       body: { server_count: this.guilds.size },
       json: true
-    }).then(() => this.debug("Updated DBL guild count."), () => this.log.warn("Unable to update DBL guild count."));
+    }).then(() => this.log.debug("Updated DBL guild count."), err => this.log.warn("Unable to update DBL guild count."));
 
     await rp({
       method: "POST",
@@ -123,15 +123,15 @@ module.exports = class Client extends AkairoClient {
       headers: { Authorization: this.lists.bpw },
       body: { server_count: this.guilds.size },
       json: true
-    }).then(() => this.log.debug("Updated BPW guild count."), () => this.log.warn("Unable to update BPW guild count."));
+    }).then(() => this.log.debug("Updated BPW guild count."), err => this.log.warn("Unable to update BPW guild count."));
 
     await rp({
       method: "POST",
-      uri: `https://botlist.space/api/api/bots/${this.user.id}`,
+      uri: `https://botlist.space/api/bots/${this.user.id}`,
       headers: { Authorization: this.lists.bds },
       body: { server_count: this.guilds.size },
       json: true
-    }).then(() => this.log.debug("Updated BDS guild count."), () => this.log.warn("Unable to update BDS guild count."));
+    }).then(() => this.log.debug("Updated BDS guild count."), err => this.log.warn("Unable to update BDS guild count."));
 
     await rp({
       method: "POST",
@@ -139,7 +139,7 @@ module.exports = class Client extends AkairoClient {
       headers: { Authorization: this.lists.bfd },
       body: { server_count: this.guilds.size },
       json: true
-    }).then(() => this.log.debug("Updated BFD guild count."), () => this.log.warn("Unable to update BFD guild count."));
+    }).then(() => this.log.debug("Updated BFD guild count."), err => this.log.warn("Unable to update BFD guild count."));
 
     return;
   }
