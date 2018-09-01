@@ -13,12 +13,12 @@ module.exports = class StatsCommand extends require(path.resolve("src/structure/
   }
 
   async exec(msg) {
-    let servers = this.client.guilds.size;
-    let channels = this.client.guilds.size;
-    let users = this.client.guilds.map(guild => guild.memberCount).reduce((a, b) => a + b);
+    let servers = (await this.client.shard.broadcastEval("this.guilds.size")).reduce((a, b) => a + b, 0);
     let memory = `${Math.round(process.memoryUsage().heapUsed / 1024 / 1024)}MB`;
     let uptime = moment.duration(this.client.uptime).format("d[ Days], h[ Hours], m[ Minutes]");
-    let dev = this.client.users.get(this.client.ownerID) ? this.client.users.get(this.client.ownerID).tag : "CarrotStress";
+    let dev = this.client.users.get(this.client.ownerID)
+      ? this.client.users.get(this.client.ownerID).tag
+      : "CarrotStress";
 
     return msg.util.embed({
       title: "SteamRadar Stats",
@@ -34,8 +34,8 @@ module.exports = class StatsCommand extends require(path.resolve("src/structure/
           inline: true
         },
         {
-          name: "General Stats:",
-          value: `Servers: ${servers}\nChannels: ${channels}\nUsers: ${users}`,
+          name: "Servers:",
+          value: servers,
           inline: true
         },
         {

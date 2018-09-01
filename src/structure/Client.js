@@ -16,7 +16,10 @@ module.exports = class Client extends AkairoClient {
     this.configDirectory = configDirectory;
     this.dataDirectory = dataDirectory;
     let { version, defaults, invite, server, upvote, dev } = require(path.join(this.configDirectory, "settings"));
-    this.data = { cc: require(path.join(this.dataDirectory, "countries")), cur: require(path.join(this.dataDirectory, "currency")) };
+    this.data = {
+      cc: require(path.join(this.dataDirectory, "countries")),
+      cur: require(path.join(this.dataDirectory, "currency"))
+    };
 
     this.version = version;
     this.defaults = defaults;
@@ -108,22 +111,53 @@ module.exports = class Client extends AkairoClient {
 
   async postGuilds() {
     if (this.dev) return;
+    if (this.shard.id != this.shard.count - 1) return;
 
-    rp({
+    await rp({
       method: "POST",
       uri: `https://discordbots.org/api/bots/${this.user.id}/stats`,
       headers: { Authorization: this.lists.dbl },
-      body: { server_count: this.guilds.size },
+      body: {
+        shards: await this.shard.broadcastEval("this.guilds.size"),
+        shard_count: this.shard.count,
+        shard_id: this.shard.id
+      },
       json: true
-    }).then(() => this.debug("Updated DBL guild count."), () => this.log.warn("Unable to update DBL guild count."));
+    }).then(() => this.log.debug("Updated DBL guild count."), () => this.log.warn("Unable to update DBL guild count."));
 
-    rp({
+    await rp({
       method: "POST",
       uri: `https://bots.discord.pw/api/bots/${this.user.id}/stats`,
       headers: { Authorization: this.lists.bpw },
-      body: { server_count: this.guilds.size },
+      body: {
+        shard_id: this.shard.id,
+        shard_count: this.shard.count,
+        server_count: this.guilds.size
+      },
       json: true
     }).then(() => this.log.debug("Updated BPW guild count."), () => this.log.warn("Unable to update BPW guild count."));
+
+    await rp({
+      method: "POST",
+      uri: `https://botlist.space/api/bots/${this.user.id}`,
+      headers: { Authorization: this.lists.bds },
+      body: { shards: await this.shard.broadcastEval("this.guilds.size") },
+      json: true
+    }).then(
+      () => this.log.debug("Updated BDS guild count."),
+      err => this.log.warn("Unable to update BDS guild count.")
+    );
+
+    await rp({
+      method: "POST",
+      uri: `https://botsfordiscord.com/api/v1/bots/${this.user.id}`,
+      headers: { Authorization: this.lists.bfd },
+      body: { server_count: (await this.shard.broadcastEval("this.guilds.size")).reduce((a, b) => a + b, 0) },
+      json: true
+    }).then(
+      () => this.log.debug("Updated BFD guild count."),
+      err => this.log.warn("Unable to update BFD guild count.")
+    );
 
     return;
   }
